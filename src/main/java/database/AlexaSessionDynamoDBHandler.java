@@ -99,7 +99,7 @@ public class AlexaSessionDynamoDBHandler {
         try {
             Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
             ArrayList<String> listDynamo = (ArrayList<String>) persistentAttributes.get(listName);
-            //TODO: clear the list
+            //TODO: clear the lists
             persistentAttributes.clear();
             input.getAttributesManager().setPersistentAttributes(persistentAttributes);
             input.getAttributesManager().savePersistentAttributes();
