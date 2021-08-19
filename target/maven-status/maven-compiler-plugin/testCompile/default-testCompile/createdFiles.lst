@@ -1,0 +1,4 @@
+com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/OpenLibraryRepositoryTest.class
+com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/AddBookHandlerTest.class
+database/AlexaSessionDynamoDBHandlerTest.class
+com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/FindBookHandlerTest.class

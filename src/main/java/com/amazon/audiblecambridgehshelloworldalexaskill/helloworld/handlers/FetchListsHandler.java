@@ -1,0 +1,94 @@
+package com.amazon.audiblecambridgehshelloworldalexaskill.helloworld.handlers;
+
+import com.amazon.ask.dispatcher.request.handler.HandlerInput;
+import com.amazon.ask.dispatcher.request.handler.RequestHandler;
+import com.amazon.ask.model.Intent;
+import com.amazon.ask.model.IntentRequest;
+import com.amazon.ask.model.Request;
+import com.amazon.ask.model.Response;
+import com.amazon.ask.model.Slot;
+import database.AlexaSessionDynamoDBHandler;
+
+import java.util.*;
+
+import static com.amazon.ask.request.Predicates.intentName;
+
+public class FetchListsHandler implements RequestHandler {
+
+    /**
+     * Determine if this handler can handle the intent (but doesn't actually handle it)
+     *
+     * This is called by the ASK framework.
+     *
+     * @param input
+     * @return
+     */
+    @Override
+    public boolean canHandle(HandlerInput input) {
+        return input.matches(intentName("FetchListsIntent"));
+    }
+
+    /**
+     * Actually handle the event here.
+     *
+     * This is called by the ASK framework.
+     *
+     * @param input
+     * @return
+     */
+    @Override
+    public Optional<Response> handle(HandlerInput input) {
+        log(input, "Starting fetch list request");
+//        logSlots(input);
+        int numLists = AlexaSessionDynamoDBHandler.numLists(input);
+        StringBuilder listNames = AlexaSessionDynamoDBHandler.listNames(input);
+        String speechTextNoLists = "<speak> You don't have any lists right now, try adding a book </speak>";
+        String speechTextWithLists = "<speak> You have %s lists called %s </speak>";
+        String speechText = numLists!=0 ? String.format(speechTextWithLists, numLists, listNames) : speechTextNoLists;
+
+        log(input, "Speech text response is " + speechText);
+
+        // response object with a card (shown on devices with a screen) and speech (what alexa says)
+        return input.getResponseBuilder()
+                .withSpeech(speechText) // alexa says this
+                .withSimpleCard("HelloWorld", speechText) // alexa will show this on a screen
+                .build();
+    }
+    /**
+     * Get the slots passed into the request
+     * @param input The input object
+     * @return Map of slots
+     */
+    Map<String, Slot> getSlots(HandlerInput input) {
+        // this chunk of code gets the slots
+        Request request = input.getRequestEnvelope().getRequest();
+        IntentRequest intentRequest = (IntentRequest) request;
+        Intent intent = intentRequest.getIntent();
+        System.out.println(intentRequest);
+        System.out.println(intent);
+        return Collections.unmodifiableMap(intent.getSlots());
+    }
+
+    /**
+     * Log slots for easier debugging
+     * @param input Input passed to handle
+     */
+//    void logSlots(HandlerInput input) {
+//        Map<String, Slot> slots = getSlots(input);
+//        // log slot values including request id and time for debugging
+//        for(String key : slots.keySet()) {
+//            log(input, String.format("Slot value key=%s, value = %s", key, slots.get(key).toString()));
+//        }
+//    }
+
+    /**
+     * Logs debug messages in an easier to search way
+     * You can also use system.out, but it'll be harder to work with
+     */
+    void log(HandlerInput input, String message) {
+        System.out.printf("[%s] [%s] : %s]\n",
+                input.getRequestEnvelope().getRequest().getRequestId(),
+                new Date(),
+                message);
+    }
+}
