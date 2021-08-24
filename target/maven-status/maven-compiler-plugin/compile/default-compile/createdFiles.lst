@@ -6,6 +6,7 @@ model/Book.class
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/FetchListsHandler.class
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/RemoveBookHandler.class
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/ClearListHandler.class
+com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/SearchByAuthorHandler.class
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/AddBookHandler.class
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/HelpIntentHandler.class
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/OpenLibraryRepoAuthor.class

@@ -15,5 +15,6 @@
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/LaunchRequestHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/ReadListHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/HelloWorldIntentHandler.java
+/Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/SearchByAuthorHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/ClearListHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/MultipleListHandler.java
