@@ -1,8 +1,11 @@
 package database;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
-import com.amazon.audiblecambridgehshelloworldalexaskill.helloworld.handlers.Book;
+import com.amazon.audiblecambridgehshelloworldalexaskill.helloworld.handlers.OpenLibraryRepoAuthor;
+import model.Book;
+import model.ReadingList;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class AlexaSessionDynamoDBHandler {
@@ -10,11 +13,6 @@ public class AlexaSessionDynamoDBHandler {
     public static void saveSessionAttributes(HandlerInput input, String key, String value) {
         try {
             Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
-
-//            ArrayList<String> list1books = new ArrayList<>();
-//            list1books.add("Harry Potter, J.K. Rowling");
-//            persistentAttributes.put("List1", list1books);
-
             persistentAttributes.put(key, value);
             input.getAttributesManager().setPersistentAttributes(persistentAttributes);
             input.getAttributesManager().savePersistentAttributes();
@@ -23,6 +21,31 @@ public class AlexaSessionDynamoDBHandler {
             throw ex;
         }
     }
+    public static void saveReadingList(HandlerInput input, String listName, ReadingList list) {
+        try {
+            Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
+            List<Map<String, String>> books = new ArrayList<>();
+            if(!AlexaSessionDynamoDBHandler.search(input, listName)){
+              persistentAttributes.put(listName, list.getListName());
+            }
+            else{
+                books = (List<Map<String, String>>) persistentAttributes.get(listName);
+            }
+            for(Book book : list.getBooks()){
+                Map<String, String> b = new HashMap<>();
+                b.put("title", book.getTitle());
+                b.put("author", book.getAuthor());
+                books.add(b);
+            }
+            persistentAttributes.put(listName, books);
+            input.getAttributesManager().setPersistentAttributes(persistentAttributes);
+            input.getAttributesManager().savePersistentAttributes();
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+            throw ex;
+        }
+    }
+
     public static String getSessionAttributes(HandlerInput input, String key){
         try {
             Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
@@ -32,34 +55,78 @@ public class AlexaSessionDynamoDBHandler {
             throw ex;
         }
     }
-    public static StringBuilder getAllSessionAttributes(HandlerInput input, String listName){
+    public static StringBuilder getAllSessionAttributes (HandlerInput input, String listName){
         try {
             Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
-            StringBuilder books = new StringBuilder();
             input.getAttributesManager().savePersistentAttributes();
+            StringBuilder allAttributes = new StringBuilder();
+            OpenLibraryRepoAuthor libraryAuthor = new OpenLibraryRepoAuthor();
             if (!persistentAttributes.isEmpty()){
-                System.out.println(persistentAttributes.keySet().toString());
-                System.out.println(listName);
-                ArrayList<String> keys = (ArrayList<String>)(persistentAttributes.get(listName));
+                List<Map<String, String>> keys = (List<Map<String, String>>) persistentAttributes.get(listName);
+                System.out.println(keys);
                 boolean first = true;
-                for(String key: keys){ //TODO: make the code more efficient, see line 46
-                    books.append(first ? "": ", ").append(key);
-                    first = false;
+                for (Map<String, String> key : keys) {
+                    for (Object o : key.entrySet()) {
+                        Map.Entry pair = (Map.Entry) o;
+                        if(pair.getKey().toString().equals("title")){
+                            String title = (String) pair.getValue();
+                            Book current = new Book(title);
+                            if (first) {
+                                allAttributes.append(current.toString()).append(", ");
+                            } else {
+                                allAttributes.append(", ").append(current.toString());
+                            }
+                            first = false;
+                        }
+                    }
                 }
             }
-            return books;
+            return allAttributes;
         } catch (Exception ex) {
             System.out.println(ex.toString());
             throw ex;
         }
     }
-    public static void newList(HandlerInput input, String listName, String bookTitle) {
-        //TODO: fix default case
+    public static ReadingList getAllReadingLists(HandlerInput input, String listName){
+        try {
+            //TODO: fix method
+            Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
+            ReadingList list = new ReadingList(listName);
+            //input.getAttributesManager().savePersistentAttributes();
+            if (!persistentAttributes.isEmpty()){
+                ArrayList<String> keys = (ArrayList<String>)(persistentAttributes.get(listName));
+                Book currentBook;
+                for(String key: keys){
+                    currentBook = new Book(key);
+                    list.add(currentBook);
+                }
+            }
+            return list;
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+            throw ex;
+        }
+    }
+//    public static void newList(HandlerInput input, String listName, String bookTitle) {
+//        try {
+//            Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
+//            ArrayList<String> newList = new ArrayList<>();
+//            Book currentBook = new Book(bookTitle);
+//            newList.add(currentBook.toString());
+//            persistentAttributes.put(listName, newList);
+//            input.getAttributesManager().setPersistentAttributes(persistentAttributes);
+//            input.getAttributesManager().savePersistentAttributes();
+//        } catch (Exception ex) {
+//            System.out.println(ex.toString());
+//            throw ex;
+//        }
+//    }
+    public static void newReadingList(HandlerInput input, String listName, String bookTitle) {
         try {
             Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
-            ArrayList<String> newList = new ArrayList<>();
+            ReadingList newList = new ReadingList(listName);
             Book currentBook = new Book(bookTitle);
-            newList.add(currentBook.toString());
+            newList.add(currentBook);
             persistentAttributes.put(listName, newList);
             input.getAttributesManager().setPersistentAttributes(persistentAttributes);
             input.getAttributesManager().savePersistentAttributes();
@@ -81,26 +148,25 @@ public class AlexaSessionDynamoDBHandler {
         }
         return false;
     }
-    public static void append(HandlerInput input, String listName, String bookTitle){
-        try {
-            Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
-            ArrayList<String> listDynamo = (ArrayList<String>) persistentAttributes.get(listName);
-            Book currentBook = new Book(bookTitle);
-            listDynamo.add(currentBook.toString());
-            persistentAttributes.put(listName, listDynamo);
-            input.getAttributesManager().setPersistentAttributes(persistentAttributes);
-            input.getAttributesManager().savePersistentAttributes();
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-            throw ex;
-        }
-    }
+//    public static void append(HandlerInput input, String listName, String bookTitle){
+//        try {
+//            Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
+//            ArrayList<String> listDynamo = (ArrayList<String>) persistentAttributes.get(listName);
+//            Book currentBook = new Book(bookTitle);
+//            listDynamo.add(currentBook.getTitle());
+//            listDynamo.add(currentBook.getAuthor());
+//            persistentAttributes.put(listName, listDynamo);
+//            input.getAttributesManager().setPersistentAttributes(persistentAttributes);
+//            input.getAttributesManager().savePersistentAttributes();
+//        } catch (Exception ex) {
+//            System.out.println(ex.toString());
+//            throw ex;
+//        }
+//    }
     public static void clear(HandlerInput input, String listName) {
         try {
             Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
-            ArrayList<String> listDynamo = (ArrayList<String>) persistentAttributes.get(listName);
-            //TODO: clear the lists
-            persistentAttributes.clear();
+            persistentAttributes.remove(listName);
             input.getAttributesManager().setPersistentAttributes(persistentAttributes);
             input.getAttributesManager().savePersistentAttributes();
         } catch (Exception ex) {
@@ -137,15 +203,27 @@ public class AlexaSessionDynamoDBHandler {
             throw ex;
         }
     }
-    public static void removeBook(HandlerInput input, String listName, String bookName) {
+    public static boolean removeBook(HandlerInput input, String listName, String bookName) {
         try {
             Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
             ArrayList<String> listDynamo = (ArrayList<String>) persistentAttributes.get(listName);
-            //TODO: search all list for the book and store listName and in the listDynamo array, then remove the book from the listDynamo a
+            boolean containsBook;
+            Book currentBook = new Book(bookName);
+            String author = currentBook.getAuthor();
+            Map<String, String> bookMap = new HashMap<>();
+            bookMap.put("author", author);
+            bookMap.put("title", bookName);
+            if(listDynamo.contains(bookMap)){
+                listDynamo.remove(bookMap);
+                containsBook = true;
+            }
+            else{
+                containsBook = false;
+            }
             persistentAttributes.put(listName, listDynamo);
-            persistentAttributes.clear();
             input.getAttributesManager().setPersistentAttributes(persistentAttributes);
             input.getAttributesManager().savePersistentAttributes();
+            return containsBook;
         } catch (Exception ex) {
             System.out.println(ex.toString());
             throw ex;

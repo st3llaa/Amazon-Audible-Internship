@@ -1,8 +1,11 @@
+/Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/RemoveBookHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/FetchListsHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/example/Hello.java
+/Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/model/ReadingList.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/FindBookHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/HelpIntentHandler.java
-/Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/Book.java
+/Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/OpenLibraryRepoAuthor.java
+/Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/model/Book.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/SessionEndedRequestHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/database/AlexaSessionDynamoDBHandler.java
 /Users/astburyh/IdeaProjects/HighSchool_Intern_2021/src/main/java/com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/OpenLibraryRepository.java

@@ -8,6 +8,8 @@ import com.amazon.ask.model.Request;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.model.Slot;
 import database.AlexaSessionDynamoDBHandler;
+import model.ReadingList;
+import model.Book;
 
 import java.util.*;
 
@@ -44,6 +46,7 @@ public class ReadListHandler implements RequestHandler {
         String listName = slots.get("ListNameSlot").getValue();
 
         StringBuilder readingList = AlexaSessionDynamoDBHandler.getAllSessionAttributes(input, listName);
+        //ReadingList readingListAttributes = AlexaSessionDynamoDBHandler.getAllReadingLists(input, listName);
         String speechTextWithBook = "<speak> Your reading list has %s </speak>";
         String speechText = String.format(speechTextWithBook, readingList);
 

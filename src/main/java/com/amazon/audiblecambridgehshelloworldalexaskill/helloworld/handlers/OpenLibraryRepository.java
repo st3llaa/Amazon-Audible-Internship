@@ -1,11 +1,8 @@
 package com.amazon.audiblecambridgehshelloworldalexaskill.helloworld.handlers;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
-import com.amazon.ask.dispatcher.request.handler.RequestHandler;
-import com.amazon.ask.model.Slot;
-import org.apache.commons.io.IOUtils;
+import model.Book;
 import org.json.JSONObject;
-import org.json.XML;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +13,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class OpenLibraryRepository {
@@ -102,5 +98,11 @@ public class OpenLibraryRepository {
             //log.error("Error in readHttpResponse: ", e); // TODO: change to your logging method
         }
         return null;
+    }
+    void log(HandlerInput input, String message) {
+        System.out.printf("[%s] [%s] : %s]\n",
+                input.getRequestEnvelope().getRequest().getRequestId().toString(),
+                new Date(),
+                message);
     }
 }

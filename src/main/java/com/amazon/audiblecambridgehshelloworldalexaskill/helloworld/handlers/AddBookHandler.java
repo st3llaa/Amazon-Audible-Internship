@@ -55,7 +55,6 @@ public class AddBookHandler implements RequestHandler {
                 String bookAuthor = search.searchBook(bookTitle).getAuthor();
                 MultipleListHandler x = new MultipleListHandler();
                 x.handle(input);
-
                 String speechTextWithBook = "<speak> I've added %s by %s to your reading list </speak>";
                 speechText = String.format(speechTextWithBook, slots.get("BookNameSlot").getValue(), bookAuthor);
             }

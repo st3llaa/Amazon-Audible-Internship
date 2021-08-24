@@ -8,6 +8,7 @@ import com.amazon.ask.model.Request;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.model.Slot;
 import database.AlexaSessionDynamoDBHandler;
+import model.ReadingList;
 
 import java.util.Collections;
 import java.util.Date;
@@ -63,7 +64,8 @@ public class HelloWorldIntentHandler implements RequestHandler {
 
         String key = "CITYNAME";
         String value = slots.get("CityNameSlot").getValue();
-        AlexaSessionDynamoDBHandler.saveSessionAttributes(input, key, value );
+        //ReadingList readingList = new ReadingList(value);
+        AlexaSessionDynamoDBHandler.saveSessionAttributes(input, key, value);
 
         log(input, "Speech text response is " + speechText);
 

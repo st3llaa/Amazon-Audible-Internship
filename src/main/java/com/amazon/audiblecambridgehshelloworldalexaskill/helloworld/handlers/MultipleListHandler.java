@@ -9,6 +9,8 @@ import com.amazon.ask.model.Response;
 import com.amazon.ask.model.Slot;
 import database.AlexaSessionDynamoDBHandler;
 import example.Hello;
+import model.Book;
+import model.ReadingList;
 
 import java.util.Collections;
 import java.util.Date;
@@ -49,21 +51,13 @@ public class MultipleListHandler implements RequestHandler {
         String speechText = "";
 
         if(slots.containsKey("BookNameSlot")) {
-            String bookToAdd = slots.get("BookNameSlot").getValue();
+            String bookTitle = slots.get("BookNameSlot").getValue();
             String listName = "";
+            Book bookToAdd = new Book(bookTitle);
             listName = !slots.containsKey("ListNameSlot") ? "reading list" : slots.get("ListNameSlot").getValue();
-//            if(!slots.containsKey("ListNameSlot")){
-//                listName = "reading list";
-//            }
-//            else {
-//                listName = slots.get("ListNameSlot").getValue();
-//            }
-            if(AlexaSessionDynamoDBHandler.search(input, listName)){ // list already created check
-                AlexaSessionDynamoDBHandler.append(input, listName, bookToAdd);
-            }
-            else{
-                AlexaSessionDynamoDBHandler.newList(input, listName, bookToAdd);
-            }
+            ReadingList list = new ReadingList(listName);
+            list.add(bookToAdd);
+            AlexaSessionDynamoDBHandler.saveReadingList(input, listName, list);
             speechText = String.format(speechTextFinal, slots.get("BookNameSlot").getValue(), listName);
         }
 
