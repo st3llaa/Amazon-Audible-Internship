@@ -23,6 +23,7 @@ public class Hello extends SkillStreamHandler {
                         new FetchListsHandler(),
                         new RemoveBookHandler(),
                         new SearchByAuthorHandler(),
+                        new SearchListHandler(),
                         new HelloWorldIntentHandler(),
                         new CancelandStopIntentHandler(),
                         new HelpIntentHandler(),

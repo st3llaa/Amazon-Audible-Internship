@@ -148,6 +148,24 @@ public class AlexaSessionDynamoDBHandler {
         }
         return false;
     }
+    public static boolean searchList(HandlerInput input, String bookName, String listName){
+        try {
+            Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());
+            Map<String, String> bookMap = new HashMap<>();
+            Book book = new Book(bookName);
+            String author = book.getAuthor();
+            bookMap.put("author", author);
+            bookMap.put("title", bookName);
+            if(persistentAttributes.containsKey(listName)){
+                ArrayList<String> listDynamo = (ArrayList<String>) persistentAttributes.get(listName);
+                return listDynamo.contains(bookMap);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+            throw ex;
+        }
+        return false;
+    }
 //    public static void append(HandlerInput input, String listName, String bookTitle){
 //        try {
 //            Map<String, Object> persistentAttributes = new HashMap<>(input.getAttributesManager().getPersistentAttributes());

@@ -2,6 +2,7 @@ com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/LaunchRequ
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/ReadListHandler.class
 model/ReadingList.class
 example/Hello.class
+com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/SearchListHandler.class
 model/Book.class
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/FetchListsHandler.class
 com/amazon/audiblecambridgehshelloworldalexaskill/helloworld/handlers/RemoveBookHandler.class
