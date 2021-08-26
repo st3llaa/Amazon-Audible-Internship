@@ -54,7 +54,7 @@ public class RemoveBookHandler implements RequestHandler {
             String listName = slots.get("ListNameSlot").getValue();
 
             if(AlexaSessionDynamoDBHandler.removeBook(input, listName, bookTitle)){
-                String speechTextWithBook = "<speak> I've removed %s from your %s list </speak>";
+                String speechTextWithBook = "<speak> I've removed %s from your %s </speak>";
                 speechText = String.format(speechTextWithBook, bookTitle, listName);
             }
         }

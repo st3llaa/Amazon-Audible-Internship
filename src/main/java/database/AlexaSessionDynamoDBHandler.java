@@ -72,11 +72,12 @@ public class AlexaSessionDynamoDBHandler {
                             String title = (String) pair.getValue();
                             Book current = new Book(title);
                             if (first) {
-                                allAttributes.append(current.toString()).append(", ");
-                            } else {
+                                allAttributes.append(current.toString());
+                                first = false;
+                            }
+                            else {
                                 allAttributes.append(", ").append(current.toString());
                             }
-                            first = false;
                         }
                     }
                 }
