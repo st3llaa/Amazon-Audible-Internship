@@ -1,4 +1,4 @@
-# AmazonInternship
+# Amazon Internship
 Alexa Skill; Use cases: book organization, invokes reading lists functionalities: open library searches, creates, fetches, searches, updates (adds, removes, searches for books) and cleares lists
 UX: voice activated functionality requests
 
